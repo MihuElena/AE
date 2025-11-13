@@ -1,5 +1,18 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from '@headlessui/react'
+import {
+  Bars3Icon,
+  XMarkIcon,
+  UserCircleIcon,
+  ShoppingCartIcon,
+} from '@heroicons/react/24/outline'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/slices/userSlice'
@@ -16,9 +29,11 @@ export default function Navbar() {
   const dispatch = useDispatch()
   const loggedIn = useSelector((state) => state.user.loggedIn)
 
-  const isActive = (href) => {
-    return location.pathname === href
-  }
+  // cart din redux
+  const cartItems = useSelector((state) => state.cart?.items || [])
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+
+  const isActive = (href) => location.pathname === href
 
   const handleAuthClick = () => {
     if (loggedIn) {
@@ -28,6 +43,11 @@ export default function Navbar() {
       navigate('/login')
     }
   }
+
+  const handleCartClick = () => {
+    navigate('/cart')
+  }
+
   return (
     <Disclosure as="nav" className="relative bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -41,6 +61,7 @@ export default function Navbar() {
               <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
             </DisclosureButton>
           </div>
+
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <img
@@ -57,7 +78,9 @@ export default function Navbar() {
                     to={item.href}
                     aria-current={isActive(item.href) ? 'page' : undefined}
                     className={classNames(
-                      isActive(item.href) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white',
+                      isActive(item.href)
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-300 hover:bg-white/5 hover:text-white',
                       'rounded-md px-3 py-2 text-sm font-medium',
                     )}
                   >
@@ -67,7 +90,25 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
+          <div className="absolute inset-y-0 right-0 flex items-center gap-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {/* Cart button */}
+            {loggedIn && (
+              <button
+                type="button"
+                onClick={handleCartClick}
+                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none"
+              >
+                <span className="sr-only">View cart</span>
+                <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            )}
+
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
@@ -119,7 +160,9 @@ export default function Navbar() {
               href={item.href}
               aria-current={isActive(item.href) ? 'page' : undefined}
               className={classNames(
-                isActive(item.href) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white',
+                isActive(item.href)
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-300 hover:bg-white/5 hover:text-white',
                 'block rounded-md px-3 py-2 text-base font-medium',
               )}
             >
