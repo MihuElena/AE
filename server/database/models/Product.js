@@ -39,15 +39,15 @@ const Product = sequelize.define('Product', {
     }
   },
   category: {
-    type: DataTypes.ENUM('Electronics', 'Clothing', 'Books', 'Home', 'Sports', 'Food', 'Other'),
-    allowNull: false,
-    validate: {
-      isIn: {
-        args: [['Electronics', 'Clothing', 'Books', 'Home', 'Sports', 'Food', 'Other']],
-        msg: 'Category must be one of the predefined values'
-      }
+  type: DataTypes.ENUM('Men', 'Women', 'Unisex'),
+  allowNull: false,
+  validate: {
+    isIn: {
+      args: [['Men', 'Women', 'Unisex']],
+      msg: 'Category must be one of: Men, Women, Unisex'
     }
-  },
+  }
+},
   image: {
     // store image URL or path
     type: DataTypes.STRING,

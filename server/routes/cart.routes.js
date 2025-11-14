@@ -27,17 +27,12 @@ function getUserIdFromRequest(req) {
   }
 }
 
-/**
- * POST /cart
- * Adaugă un produs în coșul user-ului logat
- * body: { productId, quantity }
- */
+//POST /cart
+
+
 router.post('/', verifyToken, async (req, res) => {
   try {
     const userId = getUserIdFromRequest(req);
-    
-
-    console.log('POST /cart CALL:', { userId, productId, quantity }); // 👈
 
     if (!userId) {
       return res.status(401).json({
@@ -46,19 +41,6 @@ router.post('/', verifyToken, async (req, res) => {
         data: {},
       });
     }
-    // ... restul codului tău
-
-// router.post('/', verifyToken, async (req, res) => {
-//   try {
-//     const userId = getUserIdFromRequest(req);
-
-//     if (!userId) {
-//       return res.status(401).json({
-//         success: false,
-//         message: 'Not authorized',
-//         data: {},
-//       });
-//     }
 
     const { productId, quantity = 1 } = req.body;
 

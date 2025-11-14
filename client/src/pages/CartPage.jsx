@@ -57,7 +57,7 @@ export default function CartPage() {
                     {item.Product?.name || 'Unknown product'}
                   </div>
                   <div className="text-sm text-gray-400">
-                    Price: {item.Product?.price?.toFixed(2) ?? '0.00'} RON
+                    Price: {item.Product?.price?.toFixed(2) ?? '0.00'} USD
                   </div>
                 </div>
 
@@ -82,7 +82,7 @@ export default function CartPage() {
 
           <div className="flex items-center justify-between border-t border-gray-700 pt-4">
             <div className="text-lg font-semibold">
-              Total: <span className="text-indigo-400">{total.toFixed(2)} RON</span>
+              Total: <span className="text-indigo-400">{total.toFixed(2)} USD</span>
             </div>
             <button
               onClick={handleClearCart}

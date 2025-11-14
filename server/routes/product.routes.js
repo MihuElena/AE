@@ -15,7 +15,7 @@ router.post('/', verifyToken, async (req, res) => {
         res.status(500).json({success: false, message: 'Error creating product', data: error.message});
     }
 })
-
+ 
 router.put('/:id', verifyToken, async (req, res) => {
     try {
         const id = req.params.id;

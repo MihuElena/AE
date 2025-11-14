@@ -1,10 +1,10 @@
 // client/src/pages/ProductsPage.jsx
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { fetchProducts, deleteProduct } from '../api/product.routes';
-import { addToCart as addToCartApi } from '../api/cart.routes';
+import { addToCart } from '../store/slices/cartSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function ProductsPage() {
@@ -18,6 +18,7 @@ export default function ProductsPage() {
   const isAdmin = user?.role === 'admin';
 
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // 👈 AI NEVOIE DE ASTA
 
   useEffect(() => {
     const getProducts = async () => {
@@ -71,7 +72,7 @@ export default function ProductsPage() {
   };
 
   const handleAddToCart = async (productId) => {
-    console.log('CLICK ADD TO CART, productId =', productId);   // 👈 TREBUIE să apară
+    console.log('CLICK ADD TO CART, productId =', productId);
 
     if (!loggedIn) {
       toast.info('Please login to use the cart');
@@ -80,17 +81,12 @@ export default function ProductsPage() {
     }
 
     try {
-      const res = await addToCartApi(productId, 1);
-      console.log('API ADD TO CART RESPONSE:', res);            // 👈 și ăsta
-
-      if (res?.success) {
-        toast.success('Product added to cart');
-      } else {
-        toast.error(res?.message || 'Failed to add product to cart');
-      }
+      // thunk din cartSlice – face POST /cart + fetchCart
+      await dispatch(addToCart({ productId, quantity: 1 })).unwrap();
+      toast.success('Product added to cart');
     } catch (err) {
       console.error('Error adding to cart:', err);
-      toast.error('Failed to add product to cart');
+      toast.error(err || 'Failed to add product to cart');
     }
   };
 
@@ -196,7 +192,6 @@ export default function ProductsPage() {
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <a href="#" onClick={(e) => e.preventDefault()}>
-                      <span aria-hidden="true" className="absolute inset-0" />
                       {product.name}
                     </a>
                   </h3>
@@ -207,16 +202,18 @@ export default function ProductsPage() {
                 </p>
               </div>
 
-              {/* Add to cart button – vizibil pentru toți userii logați / nelogați */}
-              <div className="mt-3">
-                <button
-                  type="button"
-                  onClick={() => handleAddToCart(product.id)}
-                  className="w-full inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-                >
-                  Add to cart
-                </button>
-              </div>
+              {/* Add to cart button */}
+              {!isAdmin && (
+                  <div className="mt-3">
+                     <button
+                          type="button"
+                          onClick={() => handleAddToCart(product.id)}
+                          className="w-full inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+                      >
+                         Add to cart
+                      </button>
+                  </div>
+              )}
             </div>
           ))}
         </div>

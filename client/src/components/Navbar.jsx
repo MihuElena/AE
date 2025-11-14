@@ -1,3 +1,4 @@
+// client/src/components/Navbar.jsx
 import {
   Disclosure,
   DisclosureButton,
@@ -15,7 +16,9 @@ import {
 } from '@heroicons/react/24/outline'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 import { logout } from '../store/slices/userSlice'
+import { fetchCart } from '../store/slices/cartSlice'
 import { classNames } from '../utils/tailwind'
 
 const navigation = [
@@ -27,11 +30,19 @@ export default function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const loggedIn = useSelector((state) => state.user.loggedIn)
 
-  // cart din redux
+  const loggedIn = useSelector((state) => state.user.loggedIn)
   const cartItems = useSelector((state) => state.cart?.items || [])
+
+  // total items = suma cantităților
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+
+  // când userul e logat, iau coșul din backend
+  useEffect(() => {
+    if (loggedIn) {
+      dispatch(fetchCart())
+    }
+  }, [loggedIn, dispatch])
 
   const isActive = (href) => location.pathname === href
 
@@ -80,7 +91,7 @@ export default function Navbar() {
                     className={classNames(
                       isActive(item.href)
                         ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-white/5 hover:text-white',
+                        : 'text-gray-300 hover:bg:white/5 hover:text-white',
                       'rounded-md px-3 py-2 text-sm font-medium',
                     )}
                   >
@@ -119,7 +130,7 @@ export default function Navbar() {
 
               <MenuItems
                 transition
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg:white py-1 shadow-lg outline outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
               >
                 <MenuItem>
                   <a
@@ -162,7 +173,7 @@ export default function Navbar() {
               className={classNames(
                 isActive(item.href)
                   ? 'bg-gray-900 text-white'
-                  : 'text-gray-300 hover:bg-white/5 hover:text-white',
+                  : 'text-gray-300 hover:bg:white/5 hover:text-white',
                 'block rounded-md px-3 py-2 text-base font-medium',
               )}
             >
