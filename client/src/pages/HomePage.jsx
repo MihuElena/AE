@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { FaInstagram } from 'react-icons/fa'
+import { FaInstagram, FaFacebookF } from 'react-icons/fa'
 import { useState } from 'react'
 import RatingModal from '../components/RatingModal'
 
@@ -65,8 +65,10 @@ export default function HomePage() {
             Explore Collection
           </Link>
 
-          {/* Instagram */}
-          <div className="mt-8 flex justify-center">
+          {/* Social media */}
+          <div className="mt-10 flex items-center justify-center gap-8">
+
+            {/* Instagram */}
             <a
               href="https://www.instagram.com/mystique_fragrance_parfumes?igsh=MThndnY2dTYzdnEwbQ%3D%3D&utm_source=qr"
               target="_blank"
@@ -77,9 +79,25 @@ export default function HomePage() {
               <FaInstagram className="text-2xl" />
 
               <span className="uppercase text-sm tracking-[0.3em]">
-                Follow us
+                Instagram
               </span>
             </a>
+
+            {/* Facebook */}
+            <a
+              href="https://www.facebook.com/share/1Aw5NaFNt4/?mibextid=wwXIfr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-white/90 hover:text-white
+                         transition duration-300 tracking-wide"
+            >
+              <FaFacebookF className="text-xl" />
+
+              <span className="uppercase text-sm tracking-[0.3em]">
+                Facebook
+              </span>
+            </a>
+
           </div>
 
           {/* Rate us */}
