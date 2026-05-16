@@ -15,6 +15,10 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan('dev'))
 app.use(cors());
 app.use(express.json());
+app.use(cors({
+  origin: ['https://ae-zeta-green.vercel.app'],
+  credentials: true
+}));
 
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'Hello' })
