@@ -174,6 +174,16 @@ export default function ProductsPage() {
           )}
         </div>
       </div>
+      {/* Luxury video section */}
+      <div className="mb-12 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+        <iframe
+          className="w-full h-[250px] sm:h-[400px] lg:h-[500px]"
+          src="https://www.youtube.com/embed/1qJjWkjdHfI?autoplay=1&mute=1&loop=1&playlist=AH88_wLs7DY"
+          title="Luxury Perfume Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {products
@@ -266,6 +276,7 @@ export default function ProductsPage() {
           ))}
       </div>
     </div>
+
 
     {/* Scrollbar styling */}
     <style>

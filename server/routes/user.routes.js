@@ -121,5 +121,41 @@ router.get('/:id', verifyToken, async (req, res) => {
         res.status(500).json({success: false, message: 'Error retrieving user', data: error.message});
     }
 })
+router.put('/profile/update', verifyToken, async (req, res) => {
+    try {
 
+        const user = await User.findByPk(req.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+                data: {}
+            });
+        }
+
+        const updatedUser = await user.update({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            shippingAddress: req.body.shippingAddress,
+            billingAddress: req.body.billingAddress,
+        });
+
+        delete updatedUser.dataValues.password;
+
+        res.status(200).json({
+            success: true,
+            message: 'Profile updated successfully',
+            data: updatedUser
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error updating profile',
+            data: error.message
+        });
+    }
+});
 module.exports = router;
